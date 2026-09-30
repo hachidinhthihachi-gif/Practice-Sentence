@@ -11,6 +11,7 @@ Thêm câu của riêng bạn: tạo file bank.txt cùng thư mục, mỗi dòng
     loại|cụm bắt buộc|nghĩa tiếng Việt|câu tiếng Việt|câu tiếng Anh tự nhiên
     loại là: pv (phrasal verb), col (collocation) hoặc idiom
     ví dụ:  pv|look up to|ngưỡng mộ|Tôi rất ngưỡng mộ cô giáo của mình.|I really look up to my teacher.
+    (tuỳ chọn) thêm 4 trường diễn giải cuối dòng: |nghĩa từng từ|vì sao gộp lại ra nghĩa này|nguồn gốc|ngữ cảnh dùng
 Nếu dịch lời giải thích lỗi bị 429 trên Render: đặt biến môi trường MYMEMORY_EMAIL=<email của bạn>.
 """
 import argparse
@@ -78,17 +79,85 @@ idiom|in the same boat|cùng chung cảnh ngộ|Đừng lo, tất cả chúng ta
 """
 
 
+
+# cụm|nghĩa từng từ|vì sao gộp lại ra nghĩa này|nguồn gốc / cách hình thành|ngữ cảnh dùng
+EXPLAIN_TEXT = """
+look forward to|look = nhìn; forward = về phía trước; to = tới, hướng tới|Nhìn về phía trước, hướng tới điều sắp xảy ra nên có nghĩa mong chờ, háo hức.|Ẩn dụ đơn giản: mắt hướng về tương lai. Chú ý "to" ở đây là giới từ nên theo sau là danh từ hoặc V-ing (looking forward to seeing you).|Dùng cả thân mật lẫn trang trọng, rất hay gặp ở cuối thư/email: I look forward to hearing from you.
+give up|give = đưa, trao; up = lên, hết|"Trao đi" nỗ lực hoặc thói quen, còn "up" nhấn mạnh sự trọn vẹn nên nghĩa là bỏ hẳn.|Hạt từ "up" trong nhiều phrasal verb chỉ sự hoàn tất (eat up, use up, give up). Đây là cách hình thành nghĩa, không phải một điển tích.|Rất thông dụng: bỏ cuộc, bỏ thói quen (give up smoking). Sau give up dùng V-ing hoặc danh từ.
+figure out|figure = con số, hình dạng, phép tính; out = ra ngoài|Tính toán, cân nhắc cho đến khi lời giải "lộ ra" nên có nghĩa tìm ra, hiểu ra.|"Figure" gốc gần với "figures" (các con số, tính toán); "out" gợi điều ẩn giấu được đưa ra ánh sáng.|Dùng khi giải quyết vấn đề hoặc hiểu ai đó, cái gì đó: figure out how to..., figure out why.... Thân mật đến trung tính.
+run out of|run = chạy, chảy; out of = ra khỏi|Nguồn cung "chảy/chạy ra khỏi" mình nên hết sạch.|Hình ảnh chất lỏng chảy cạn khỏi bình; "run" có nghĩa gốc là chảy, giống nước chảy đi hết.|Dùng khi hết đồ dùng, thời gian, kiên nhẫn: run out of milk/time/patience. Sau "of" là danh từ.
+put off|put = đặt; off = rời ra, xa ra|"Đặt" việc ra xa khỏi thời điểm hiện tại nên nghĩa là trì hoãn.|Hạt từ "off" chỉ sự tách rời, đẩy ra xa. Cách hình thành nghĩa, không có điển tích riêng.|Dùng khi hoãn việc (put off + V-ing/danh từ), thân mật lẫn trang trọng. Lưu ý put off đôi khi còn nghĩa "làm mất hứng" tùy ngữ cảnh.
+turn down|turn = xoay, vặn; down = xuống|Nghĩa gốc là vặn nhỏ xuống (turn down the volume); nghĩa mở rộng là "hạ" một lời đề nghị xuống, tức từ chối.|Từ nghĩa vật lý (vặn nhỏ) chuyển sang nghĩa bóng (bác bỏ đề nghị).|Dùng khi từ chối lời mời, lời đề nghị, ứng viên: turn down an offer. Lịch sự và thông dụng.
+get along with|get = trở nên, đi; along = cùng nhau, song song; with = với|"Đi cùng nhau" suôn sẻ với ai đó nên nghĩa là hòa thuận.|"Along" gợi hình ảnh hai người cùng đi trên một con đường mà không va chạm.|Nói về quan hệ tốt với đồng nghiệp, bạn bè, hàng xóm. Thân mật. Tiếng Anh Anh hay dùng get on with.
+carry out|carry = mang; out = ra ngoài|"Mang ra" kế hoạch từ trên giấy ra ngoài đời nên nghĩa là thực hiện, tiến hành.|Hình ảnh đem ý tưởng ra khỏi giai đoạn dự định để làm thật.|Hơi trang trọng: carry out research/an experiment/a plan/orders. Hay gặp trong công việc, khoa học.
+come across|come = đến; across = băng ngang qua|Đi ngang qua và bắt gặp nên nghĩa là tình cờ gặp hoặc thấy.|"Across" gợi ý băng ngang lối đi nên tình cờ chạm mặt điều gì đó.|Dùng khi tình cờ tìm thấy vật hoặc gặp người. Còn nghĩa khác: come across as friendly = tạo ấn tượng thân thiện.
+take over|take = lấy, nắm; over = sang, chuyển qua|Nắm lấy quyền điều khiển và "chuyển sang" mình nên nghĩa là tiếp quản.|"Over" chỉ sự chuyển giao từ người này sang người khác.|Dùng cho tiếp quản công ty, công việc, quyền điều hành; xuất hiện nhiều trong kinh doanh và tin tức.
+break down|break = vỡ, gãy; down = xuống, dừng lại|Máy móc vỡ hoặc gãy rồi dừng lại nên nghĩa là hỏng, ngừng hoạt động.|"Down" gợi sự sụp đổ, ngừng lại. Nghĩa mở rộng: người suy sụp (break down in tears) hoặc chia nhỏ số liệu (break down the costs).|Dùng cho xe cộ, máy móc hỏng; cũng dùng cho tinh thần suy sụp hoặc phân tích chi tiết.
+set up|set = đặt, sắp xếp; up = lên, dựng lên|Đặt và dựng lên một thứ cho hoạt động được nên nghĩa là thành lập, thiết lập.|"Up" gợi sự dựng lên. Cách hình thành nghĩa, không có điển tích.|Rất thông dụng: lập công ty, cài đặt thiết bị, sắp xếp cuộc hẹn (set up a meeting).
+find out|find = tìm thấy; out = ra ngoài, lộ ra|Tìm cho đến khi sự thật "lộ ra" nên nghĩa là phát hiện, biết được thông tin.|Khác "find" (tìm thấy một vật cụ thể): find out là tìm ra thông tin hoặc sự thật.|Dùng khi biết được điều mới: find out about..., find out that..., find out who/why....
+call off|call = gọi, tuyên bố; off = tắt, rời khỏi|"Tuyên bố" dừng một việc đã sắp xếp nên nghĩa là hủy bỏ.|"Off" chỉ sự cắt đứt, dừng lại; "call" mang nghĩa tuyên bố, ra lệnh.|Dùng cho hủy sự kiện, cuộc họp, trận đấu, kế hoạch.
+bring up|bring = mang, đem; up = lên|Có hai nghĩa: "đưa lên" cho lớn dần (nuôi dạy) hoặc "đưa" một chủ đề lên để bàn.|Cả hai nghĩa cùng gợi hình ảnh nâng lên: nâng đứa trẻ lớn lên, nâng vấn đề lên mặt bàn.|Nuôi dạy: brought up by his grandparents. Nêu vấn đề: bring up a topic. Tân ngữ có thể chen giữa: bring her up.
+get over|get = đạt tới, trở nên; over = vượt qua|Vượt qua như bước qua chướng ngại nên nghĩa là vượt qua, hồi phục sau.|"Over" gợi sự vượt qua một vật cản; ở đây vật cản là nỗi buồn hoặc bệnh tật.|Dùng cho nỗi buồn, chia tay, ốm bệnh: get over a cold/a breakup/the shock.
+make a decision|make = làm, tạo ra; decision = quyết định|Người Anh coi quyết định là thứ được "tạo ra" nên dùng make, không nói "do a decision".|Collocation cố định theo thói quen của người bản xứ, không có điển tích riêng. Cùng kiểu: make a choice, make a plan.|Rất thông dụng ở mọi ngữ cảnh: make a decision about/on... Trang trọng hơn: reach a decision.
+heavy rain|heavy = nặng; rain = mưa|"Nặng" ở đây nghĩa là dày, dữ dội (mưa nặng hạt). Thường không nói "big rain".|Collocation: heavy đi với rain, snow, traffic, smoker... Chỉ là thói quen kết hợp từ.|Dùng nhiều trong dự báo thời tiết và tin tức: heavy rain warning. Mạnh hơn nữa: torrential rain.
+take a break|take = lấy; break = giờ nghỉ|"Lấy" một khoảng nghỉ cho bản thân. Không dùng "make a break" với nghĩa này.|Collocation cố định; take + danh từ hành động (take a rest/a walk/a break) tạo cách nói tự nhiên.|Thân mật, phổ biến ở công sở và trường học: coffee break, take a short break. Tiếng Anh Anh cũng hay nói have a break.
+do homework|do = làm; homework = bài tập về nhà|Với bài tập, việc nhà, việc vặt người Anh dùng "do" (do the dishes, do homework), không dùng "make".|"Do" dùng cho công việc, nhiệm vụ nói chung; "make" thiên về tạo ra một vật hoặc kết quả.|Rất thông dụng với học sinh: do (one's) homework. Cũng nói do exercises, do research.
+pay attention to|pay = trả; attention = sự chú ý; to = tới|Sự chú ý được xem như thứ có giá trị, bạn "trả" nó cho ai hoặc cái gì.|Ẩn dụ tiền bạc: chú ý như một loại "tiền" bạn bỏ ra. Chú ý "to" là giới từ nên theo sau là danh từ hoặc V-ing.|Trung tính, dùng khi nhắc nhở hoặc hướng dẫn: pay attention to details/the teacher. Cũng: pay attention in class.
+strong coffee|strong = mạnh, đậm; coffee = cà phê|Với đồ uống, "strong" chỉ độ đậm. Không nói "heavy coffee".|Collocation: strong đi với coffee, tea, wind, smell, accent... Chỉ là thói quen kết hợp từ.|Dùng ở quán cà phê hoặc khi nói chuyện hằng ngày. Trái nghĩa: weak coffee/tea.
+catch a cold|catch = bắt, nhiễm; a cold = bệnh cảm|Bệnh được xem như thứ "bắt" lấy từ môi trường hoặc từ người khác, giống bắt một quả bóng.|Collocation cố định, không nói "take a cold". Cùng kiểu: catch the flu, catch a virus.|Dùng hằng ngày. Khi đã bị cảm rồi thì nói have a cold.
+keep a promise|keep = giữ; promise = lời hứa|Lời hứa như một vật cần "giữ" cho khỏi mất. Trái nghĩa: break a promise.|Collocation theo cặp keep/break: keep/break a promise, a secret, one's word.|Dùng ở mọi ngữ cảnh, kể cả trang trọng. Ví dụ: keep one's word cũng có nghĩa tương tự.
+break the law|break = phá vỡ; the law = luật|Luật như một hàng rào, làm trái là "phá vỡ" nó.|Cặp keep/break: break the law/a rule/a record/a promise. Trái nghĩa: obey/follow the law.|Dùng trong tin tức, pháp lý và hằng ngày. Nhiều cụm cùng kiểu: break the rules.
+make progress|make = tạo ra; progress = sự tiến bộ|Tiến bộ là thứ bạn "tạo ra" dần dần; không nói "do progress".|Collocation: make progress/an effort/a mistake. "Progress" thường không đếm được nên không có "a" trước nó.|Dùng khi nói về học tập, công việc, sức khỏe: make good/great/slow progress.
+save money|save = để dành, cứu giữ; money = tiền|"Save" nghĩa là giữ lại, không tiêu hết; tiền được "cứu" khỏi bị chi tiêu.|"Save" có nghĩa gốc là cứu giữ; cũng dùng cho save time, save energy.|Dùng hằng ngày: save money, save up for a car. Trái nghĩa: spend/waste money.
+take a look at|take = lấy; a look = một cái nhìn; at = vào|"Lấy" một cái nhìn vào vật gì nên nghĩa là xem qua; nhẹ nhàng hơn chỉ dùng "look".|Kiểu take + a + danh từ hành động (take a look, a walk, a shower) tạo cách nói nhẹ, tự nhiên.|Thân mật đến trung tính; hay dùng khi nhờ ai xem giúp.
+fast food|fast = nhanh; food = đồ ăn|Món được chế biến và phục vụ nhanh (bánh burger, gà rán, khoai chiên).|Danh từ ghép cố định, phổ biến cùng sự phát triển của các chuỗi nhà hàng ăn nhanh.|Dùng hằng ngày: fast food restaurant/chain. Thường mang sắc thái không tốt cho sức khỏe.
+have a good/great time|have = có; a good time = khoảng thời gian vui|"Have" dùng với trải nghiệm: have fun, have a nice day, have a good time. Không nói "make a good time".|Collocation cố định theo thói quen của người bản xứ.|Rất thân mật: Did you have a good time? Cũng dùng làm lời chúc: Have a great time!
+reach a conclusion|reach = với tới, đạt tới; conclusion = kết luận|Kết luận như một "đích đến" mà lập luận dần dần "với tới".|Reach đi với nhiều kết quả trừu tượng: reach an agreement/a decision/a conclusion. Cũng nói come to a conclusion.|Hơi trang trọng: dùng trong họp, nghiên cứu, báo chí.
+meet the deadline|meet = gặp, đáp ứng; the deadline = hạn chót|"Meet" còn nghĩa đáp ứng (meet a need/a standard), nên kịp hạn chót là đáp ứng được thời hạn.|Theo nhiều nguồn, "deadline" ban đầu chỉ đường ranh giới trong nhà tù thời Nội chiến Mỹ mà tù nhân vượt qua sẽ bị bắn; nghĩa "hạn chót" đến sau. Cụm meet the deadline là collocation cố định.|Dùng trong công việc, học tập: meet/miss/extend the deadline.
+break the ice|break = phá vỡ; ice = băng|Không khí ngượng ngùng lúc mới gặp như lớp băng; phá vỡ nó để mọi người thoải mái trò chuyện.|Thường được giải thích bằng hình ảnh tàu phá băng mở đường cho tàu khác. Nghĩa bóng đã có từ vài trăm năm trước.|Dùng khi gặp người mới, mở đầu buổi họp hay bữa tiệc. Danh từ liên quan: an icebreaker (trò chơi, câu hỏi làm quen).
+a piece of cake|a piece = một miếng; cake = bánh|Ăn một miếng bánh là việc dễ chịu, không tốn sức nên chỉ việc rất dễ.|Được ghi nhận từ đầu thế kỷ 20, nhiều khả năng từ tiếng Anh Mỹ.|Thân mật, dùng khi nói một việc, một bài kiểm tra dễ dàng. Không hợp với văn bản rất trang trọng.
+once in a blue moon|once = một lần; blue moon = trăng xanh|Trăng xanh hiếm gặp nên cụm này chỉ điều rất hiếm khi xảy ra.|Người ta dùng "blue moon" để chỉ điều hiếm từ lâu. Hiện nay thường hiểu là lần trăng tròn thứ hai trong một tháng dương lịch.|Thân mật, nói về tần suất rất thấp.
+under the weather|under = dưới; the weather = thời tiết|Như bị thời tiết "đè" lên nên người thấy mệt, khó chịu, hơi ốm.|Một giả thuyết phổ biến: thủy thủ bị ốm phải xuống dưới boong để tránh thời tiết xấu. Chưa được xác nhận chắc chắn.|Thân mật, dùng cho ốm nhẹ, mệt mỏi: feel/be under the weather. Không dùng cho bệnh nặng.
+cost an arm and a leg|cost = tốn, có giá; an arm = một cánh tay; a leg = một cái chân|Phải trả bằng cả tay và chân, cái giá cực lớn nên nghĩa là rất đắt.|Nguồn gốc cụ thể chưa rõ ràng. Hình ảnh dễ hiểu là phải trả giá bằng chính cơ thể mình.|Thân mật, khi than đồ vật hoặc dịch vụ quá đắt.
+hit the books|hit = đánh, lao vào; the books = sách vở|"Hit" ở đây gần nghĩa bắt tay ngay vào làm mạnh mẽ (giống hit the road), nên nghĩa là học bài chăm chỉ.|Theo một số từ điển, thành ngữ này xuất hiện trong tiếng Anh Mỹ khoảng đầu thế kỷ 20.|Thân mật, nhất là học sinh, sinh viên trước kỳ thi.
+spill the beans|spill = làm đổ; the beans = hạt đậu|Làm đổ đậu khiến thứ giấu bên trong lộ ra nên nghĩa là tiết lộ bí mật.|Một giả thuyết cho rằng từ Hy Lạp cổ: dùng đậu để bỏ phiếu kín, làm đổ hũ thì lộ kết quả. Chưa được xác nhận chắc chắn.|Thân mật, khi lỡ nói ra bí mật hoặc điều bất ngờ: Don't spill the beans!
+the ball is in one's court|the ball = quả bóng; court = sân (thi đấu)|Như quần vợt: bóng ở phần sân của ai thì đến lượt người đó đánh, tức đến lượt họ hành động hoặc quyết định.|Hình ảnh lấy từ các môn có sân như quần vợt. Nghĩa bóng phổ biến trong thế kỷ 20. Chú ý "court" ở đây không phải tòa án.|Dùng trong công việc, đàm phán, sau khi mình đã làm phần việc của mình.
+kill two birds with one stone|kill = giết, hạ; two birds = hai con chim; one stone = một hòn đá|Một cú ném đá hạ được hai con chim nên nghĩa là một hành động đạt hai mục đích.|Hình ảnh săn chim bằng đá; cách nói được ghi nhận từ vài thế kỷ trước.|Thân mật: dùng khi một việc giải quyết được hai vấn đề cùng lúc.
+bite the bullet|bite = cắn; the bullet = viên đạn|Cắn viên đạn để chịu đau nên nghĩa là cắn răng chịu đựng, chấp nhận làm việc khó chịu nhưng cần thiết.|Thường được kể rằng lính bị mổ ngày xưa cắn viên đạn để chịu đau khi chưa có thuốc mê. Đây là cách giải thích phổ biến nhưng chưa có bằng chứng chắc chắn.|Thân mật, hay gặp trong tin tức: bite the bullet and do something.
+on the same page|on = trên; the same page = cùng một trang|Cùng đọc một trang giấy nên nghĩa là cùng hiểu và cùng đồng ý với nhau.|Hình ảnh cùng nhìn một trang tài liệu. Thường dùng ở công sở, nhất là tiếng Anh Mỹ.|Dùng trong họp, dự án khi cần chắc chắn mọi người hiểu giống nhau.
+call it a day|call = tuyên bố; it = việc đó; a day = một ngày|"Tuyên bố" ngày làm việc đã đủ nên nghĩa là nghỉ, dừng làm việc hôm nay.|Nguồn gốc chưa rõ, được ghi nhận từ khoảng đầu thế kỷ 20.|Thân mật, dùng khi nói với đồng nghiệp hoặc bạn bè lúc kết thúc công việc trong ngày.
+beat around the bush|beat = đập, khua; around = xung quanh; the bush = bụi cây|Người đi săn khua bụi cây vòng quanh thay vì đi thẳng vào nên nghĩa là nói vòng vo, không vào thẳng vấn đề.|Thường giải thích từ việc săn chim: người khua bụi rậm cho chim bay ra. Cách nói đã có từ nhiều thế kỷ.|Thân mật, dùng để yêu cầu ai nói thẳng vào vấn đề.
+hit the nail on the head|hit = đánh, đập trúng; the nail = cái đinh; the head = mũ đinh (đầu đinh)|Đóng búa trúng ngay mũ đinh thì đinh mới vào chắc, nên nghĩa là nói hoặc làm trúng ngay điểm mấu chốt.|Bắt nguồn từ nghề mộc. Cách nói đã xuất hiện trong tiếng Anh từ khoảng thế kỷ 16.|Thân mật đến trung tính, thường dùng để khen ai nói đúng vấn đề.
+get out of hand|get = trở nên; out of = ra khỏi; hand = bàn tay|Không còn "nằm trong tay" mình nên nghĩa là vượt khỏi tầm kiểm soát.|Hình ảnh cầm nắm, kiểm soát bằng tay (có thể liên quan đến việc cầm cương ngựa). Đây là cách giải thích, chưa chắc chắn.|Dùng cho tình huống, đám đông, tình hình mất kiểm soát.
+in the same boat|in = trong; the same boat = cùng một con thuyền|Cùng ngồi trên một chiếc thuyền thì chung số phận nên nghĩa là cùng cảnh ngộ.|Ẩn dụ đi thuyền chung. Cách nói đã được dùng từ nhiều thế kỷ trước.|Thân mật, thường dùng để an ủi khi mọi người cùng gặp khó khăn giống nhau.
+"""
+
+
+def load_explain():
+    d = {}
+    for line in EXPLAIN_TEXT.strip().splitlines():
+        p = [x.strip() for x in line.split("|")]
+        if len(p) == 5:
+            d[p[0]] = dict(zip(("parts", "why", "origin", "use"), p[1:]))
+    return d
+
+
 def load_bank():
     text = BANK_TEXT
     try:
         text += "\n" + Path(__file__).with_name("bank.txt").read_text(encoding="utf-8")
     except Exception:
         pass
-    bank = []
+    bank, ex = [], load_explain()
     for line in text.splitlines():
         p = [x.strip() for x in line.split("|")]
-        if len(p) == 5 and p[0] in ("pv", "col", "idiom") and all(p):
-            bank.append({"id": len(bank), "type": p[0], "expr": p[1], "meaning": p[2], "vi": p[3], "en": p[4]})
+        if len(p) in (5, 9) and p[0] in ("pv", "col", "idiom") and all(p):
+            it = {"id": len(bank), "type": p[0], "expr": p[1], "meaning": p[2], "vi": p[3], "en": p[4],
+                  "parts": "", "why": "", "origin": "", "use": ""}
+            it.update(ex.get(p[1], {}))
+            if len(p) == 9:
+                it.update(dict(zip(("parts", "why", "origin", "use"), p[5:])))
+            bank.append(it)
     return bank
 
 
@@ -289,7 +358,7 @@ class Handler(BaseHTTPRequestHandler):
         if u.path == "/":
             self._send(PAGE, "text/html")
         elif u.path == "/api/bank":       # không gửi câu mẫu tiếng Anh cho trình duyệt (chỉ hiện sau khi chấm)
-            j([{k: b[k] for k in ("id", "type", "expr", "meaning", "vi")} for b in BANK])
+            j([{k: b[k] for k in ("id", "type", "expr", "meaning", "vi", "parts", "why", "origin", "use")} for b in BANK])
         elif u.path == "/api/grade" and p.get("id", "").isdigit() and int(p["id"]) < len(BANK):
             j(grade(BANK[int(p["id"])], p.get("answer", "")))
         else:
@@ -324,6 +393,11 @@ button.stop{padding:12px 16px;font-size:1rem;border-radius:10px;border:1px solid
 .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;color:#fff}
 .req{margin:12px 0;padding:12px 14px;border-radius:10px;background:var(--bg);border:1px dashed var(--accent);line-height:1.5}
 .req b{color:var(--accent);font-size:1.15rem}
+.exp{margin-top:10px;font-size:.92rem;line-height:1.55}
+.exp summary{cursor:pointer;font-weight:700;color:var(--ink)}
+.exp div{margin-top:8px}
+.exp small{display:block;color:var(--sub);font-weight:700;font-size:.78rem}
+.exp span.p{color:var(--ink)}
 .vsent{font-size:1.25rem;font-weight:700;margin:6px 0 14px;line-height:1.5}
 .score{font-size:2.4rem;font-weight:800;text-align:center}
 .ans{font-size:1.15rem;line-height:1.9;margin:10px 0}
@@ -352,7 +426,9 @@ button.stop{padding:12px 16px;font-size:1rem;border-radius:10px;border:1px solid
 
 <div class="card" id="exBox">
   <span class="badge" id="badge"></span>
-  <div class="req">Bắt buộc dùng: <b id="expr"></b><br><span style="color:var(--sub);font-size:.9rem">Nghĩa: <span id="emean"></span></span></div>
+  <div class="req">Bắt buộc dùng: <b id="expr"></b><br><span style="color:var(--sub);font-size:.9rem">Nghĩa: <span id="emean"></span></span>
+    <details class="exp" id="exp" open><summary>📖 Diễn giải cụm này</summary>
+      <div id="expParts"></div><div id="expWhy"></div><div id="expOrigin"></div><div id="expUse"></div></details></div>
   <label>Dịch sang tiếng Anh:</label>
   <div class="vsent" id="vi"></div>
   <textarea id="answer" rows="3" placeholder="Viết câu tiếng Anh của bạn..."></textarea>
@@ -395,7 +471,10 @@ function showItem(it){
   cur=it; passed=false; LS.set('pd_cur', it.id);
   $('finished').style.display='none'; $('exBox').style.display='block';
   $('badge').textContent=TYPES[it.type][0]; $('badge').style.background=TYPES[it.type][1];
-  $('expr').textContent=it.expr; $('emean').textContent=it.meaning; $('vi').textContent='🇻🇳 '+it.vi;
+  $('expr').textContent=it.expr; $('emean').textContent=it.meaning;
+  const rows = [['expParts','🧩 Nghĩa từng từ',it.parts],['expWhy','🔗 Vì sao gộp lại ra nghĩa này',it.why],['expOrigin','📜 Nguồn gốc / cách hình thành',it.origin],['expUse','🗣️ Ngữ cảnh sử dụng',it.use]];
+  rows.forEach(r => { $(r[0]).style.display = r[2] ? 'block' : 'none'; $(r[0]).innerHTML = r[2] ? '<small>'+r[1]+'</small><span class="p">'+esc(r[2])+'</span>' : ''; });
+  $('exp').style.display = rows.some(r => r[2]) ? 'block' : 'none'; $('vi').textContent='🇻🇳 '+it.vi;
   $('answer').value=''; $('result').style.display='none'; $('nextBtn').style.display='none'; $('gradeBtn').disabled=false;
   progress();
 }
